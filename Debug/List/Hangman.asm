@@ -1283,12 +1283,14 @@ _0x0:
 	.DB  0x63,0x6F,0x6E,0x64,0x20,0x4C,0x63,0x64
 	.DB  0x0,0x20,0x25,0x64,0x2E,0x0,0x5F,0x20
 	.DB  0x0,0x43,0x6F,0x72,0x72,0x65,0x63,0x74
-	.DB  0x21,0x0,0x47,0x41,0x4D,0x45,0x20,0x4F
-	.DB  0x56,0x45,0x52,0x21,0x21,0x20,0x20,0x20
+	.DB  0x21,0x0,0x59,0x6F,0x75,0x20,0x57,0x6F
+	.DB  0x6E,0x2C,0x20,0x68,0x6F,0x6F,0x72,0x61
+	.DB  0x79,0x20,0x3A,0x29,0x20,0x0,0x47,0x41
+	.DB  0x4D,0x45,0x20,0x4F,0x56,0x45,0x52,0x21
+	.DB  0x21,0x20,0x20,0x20,0x20,0x20,0x20,0x20
 	.DB  0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20
-	.DB  0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20
-	.DB  0x74,0x72,0x79,0x20,0x61,0x67,0x61,0x69
-	.DB  0x6E,0x0
+	.DB  0x20,0x20,0x20,0x20,0x74,0x72,0x79,0x20
+	.DB  0x61,0x67,0x61,0x69,0x6E,0x0
 _0x2020060:
 	.DB  0x1
 _0x2020000:
@@ -1949,24 +1951,28 @@ __GLOBAL_INI_TBL:
 	.DW  _0x0*2+718
 
 	.DW  0x03
-	.DW  _0x61
+	.DW  _0x63
 	.DW  _0x0*2+734
 
 	.DW  0x02
-	.DW  _0x6A
+	.DW  _0x6C
 	.DW  _0x0*2+704
 
 	.DW  0x03
-	.DW  _0x6A+2
+	.DW  _0x6C+2
 	.DW  _0x0*2+734
 
 	.DW  0x09
-	.DW  _0x6A+5
+	.DW  _0x6C+5
 	.DW  _0x0*2+737
 
-	.DW  0x28
-	.DW  _0x7D
+	.DW  0x14
+	.DW  _0x80
 	.DW  _0x0*2+746
+
+	.DW  0x28
+	.DW  _0x80+20
+	.DW  _0x0*2+766
 
 	.DW  0x01
 	.DW  __seed_G101
@@ -2168,7 +2174,7 @@ _0x7:
 	CALL SUBOPT_0x4
 	BREQ _0x9
 	LDI  R30,LOW(1)
-	RJMP _0x7E
+	RJMP _0x82
 _0x9:
 	LDI  R30,LOW(191)
 	OUT  0x15,R30
@@ -2176,7 +2182,7 @@ _0x9:
 	CALL SUBOPT_0x4
 	BREQ _0xB
 	LDI  R30,LOW(2)
-	RJMP _0x7E
+	RJMP _0x82
 _0xB:
 	LDI  R30,LOW(127)
 	OUT  0x15,R30
@@ -2185,7 +2191,7 @@ _0xB:
 	ANDI R30,LOW(0xF)
 	MOV  R5,R30
 	LDI  R30,LOW(3)
-_0x7E:
+_0x82:
 	MOV  R4,R30
 _0x8:
 	LDI  R30,LOW(14)
@@ -2310,6 +2316,7 @@ _0x20A0008:
 ;char Scoretmp[50];
 ;#define  CATEGORY_LENGTH    4
 ;#define MAX_HEALTH 3
+;#define MAX_WORD_NUM 20
 ;char* Category[CATEGORY_LENGTH] = {"Sport","Movie","Countries","CS"};
 
 	.DSEG
@@ -2372,6 +2379,7 @@ _0x2A:
 ;bool bIsFirstTime;
 ;bool bWrongGuess;
 ;bool bFoundCorrectGuess;
+;bool bWon;
 ;
 ;int health = MAX_HEALTH;
 ;
@@ -2394,62 +2402,62 @@ _0x2A:
 ;
 ;// Timer1 overflow interrupt service routine
 ;interrupt [TIM1_OVF] void timer1_ovf_isr(void)
-; 0000 005C {
+; 0000 005E {
 
 	.CSEG
 _timer1_ovf_isr:
 ; .FSTART _timer1_ovf_isr
 	CALL SUBOPT_0x6
-; 0000 005D // Reinitialize Timer1 value
-; 0000 005E TCNT1H=0xFF;
+; 0000 005F // Reinitialize Timer1 value
+; 0000 0060 TCNT1H=0xFF;
 	OUT  0x2D,R30
-; 0000 005F TCNT1L=0x0F;
+; 0000 0061 TCNT1L=0x0F;
 	LDI  R30,LOW(15)
 	OUT  0x2C,R30
-; 0000 0060 // Place your code here
-; 0000 0061 
-; 0000 0062 lcd_gotoxy2(11,4);
+; 0000 0062 // Place your code here
+; 0000 0063 
+; 0000 0064 lcd_gotoxy2(11,4);
 	CALL SUBOPT_0x7
-; 0000 0063 for ( i = 0 ; i < 3; i++){
+; 0000 0065 for ( i = 0 ; i < 3; i++){
 _0x2E:
 	LDI  R30,LOW(3)
 	LDI  R31,HIGH(3)
 	CP   R8,R30
 	CPC  R9,R31
 	BRGE _0x2F
-; 0000 0064 
-; 0000 0065     lcd_print2(" ");
+; 0000 0066 
+; 0000 0067     lcd_print2(" ");
 	__POINTW2MN _0x30,0
 	RCALL _lcd_print2
-; 0000 0066 }
+; 0000 0068 }
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
 	RJMP _0x2E
 _0x2F:
-; 0000 0067 lcd_gotoxy2(11,4);
+; 0000 0069 lcd_gotoxy2(11,4);
 	CALL SUBOPT_0x7
-; 0000 0068 
-; 0000 0069 for ( i = 0 ; i < health; i++){
+; 0000 006A 
+; 0000 006B for ( i = 0 ; i < health; i++){
 _0x32:
 	LDS  R30,_health
 	LDS  R31,_health+1
 	CP   R8,R30
 	CPC  R9,R31
 	BRGE _0x33
-; 0000 006A 
-; 0000 006B     lcd_print2("*");
+; 0000 006C 
+; 0000 006D     lcd_print2("*");
 	__POINTW2MN _0x30,2
 	RCALL _lcd_print2
-; 0000 006C }
+; 0000 006E }
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
 	RJMP _0x32
 _0x33:
-; 0000 006D 
-; 0000 006E 
-; 0000 006F      sprintf(Scoretmp,"Score: %d",point);
+; 0000 006F 
+; 0000 0070 
+; 0000 0071      sprintf(Scoretmp,"Score: %d",point);
 	LDI  R30,LOW(_Scoretmp)
 	LDI  R31,HIGH(_Scoretmp)
 	ST   -Y,R31
@@ -2460,27 +2468,27 @@ _0x33:
 	LDS  R30,_point
 	LDS  R31,_point+1
 	CALL SUBOPT_0x8
-; 0000 0070 
-; 0000 0071       lcd_gotoxy2(10,3);
+; 0000 0072 
+; 0000 0073       lcd_gotoxy2(10,3);
 	LDI  R30,LOW(10)
 	ST   -Y,R30
 	LDI  R26,LOW(3)
 	RCALL _lcd_gotoxy2
-; 0000 0072       lcd_print2(Scoretmp);
+; 0000 0074       lcd_print2(Scoretmp);
 	LDI  R26,LOW(_Scoretmp)
 	LDI  R27,HIGH(_Scoretmp)
 	RCALL _lcd_print2
-; 0000 0073       lcd_print2(" ");
+; 0000 0075       lcd_print2(" ");
 	__POINTW2MN _0x30,4
 	RCALL _lcd_print2
-; 0000 0074       lcd_print2(" ");
+; 0000 0076       lcd_print2(" ");
 	__POINTW2MN _0x30,6
 	RCALL _lcd_print2
-; 0000 0075       lcd_print2(" ");
+; 0000 0077       lcd_print2(" ");
 	__POINTW2MN _0x30,8
 	RCALL _lcd_print2
-; 0000 0076 }
-	RJMP _0x85
+; 0000 0078 }
+	RJMP _0x8A
 ; .FEND
 
 	.DSEG
@@ -2488,93 +2496,93 @@ _0x30:
 	.BYTE 0xA
 ;
 ;void main(void)
-; 0000 0079 {
+; 0000 007B {
 
 	.CSEG
 _main:
 ; .FSTART _main
-; 0000 007A 
-; 0000 007B TCCR1A=(0<<COM1A1) | (0<<COM1A0) | (0<<COM1B1) | (0<<COM1B0) | (0<<WGM11) | (0<<WGM10);
+; 0000 007C 
+; 0000 007D TCCR1A=(0<<COM1A1) | (0<<COM1A0) | (0<<COM1B1) | (0<<COM1B0) | (0<<WGM11) | (0<<WGM10);
 	LDI  R30,LOW(0)
 	OUT  0x2F,R30
-; 0000 007C TCCR1B=(0<<ICNC1) | (0<<ICES1) | (0<<WGM13) | (0<<WGM12) | (1<<CS12) | (0<<CS11) | (0<<CS10);
+; 0000 007E TCCR1B=(0<<ICNC1) | (0<<ICES1) | (0<<WGM13) | (0<<WGM12) | (1<<CS12) | (0<<CS11) | (0<<CS10);
 	LDI  R30,LOW(4)
 	OUT  0x2E,R30
-; 0000 007D TCNT1H=0xFF;
+; 0000 007F TCNT1H=0xFF;
 	LDI  R30,LOW(255)
 	OUT  0x2D,R30
-; 0000 007E TCNT1L=0x0F;
+; 0000 0080 TCNT1L=0x0F;
 	LDI  R30,LOW(15)
 	OUT  0x2C,R30
-; 0000 007F ICR1H=0x00;
+; 0000 0081 ICR1H=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x27,R30
-; 0000 0080 ICR1L=0x00;
+; 0000 0082 ICR1L=0x00;
 	OUT  0x26,R30
-; 0000 0081 OCR1AH=0x00;
+; 0000 0083 OCR1AH=0x00;
 	OUT  0x2B,R30
-; 0000 0082 OCR1AL=0x00;
+; 0000 0084 OCR1AL=0x00;
 	OUT  0x2A,R30
-; 0000 0083 OCR1BH=0x00;
+; 0000 0085 OCR1BH=0x00;
 	OUT  0x29,R30
-; 0000 0084 OCR1BL=0x00;
+; 0000 0086 OCR1BL=0x00;
 	OUT  0x28,R30
-; 0000 0085 
-; 0000 0086 // Timer(s)/Counter(s) Interrupt(s) initialization
-; 0000 0087 TIMSK=(0<<OCIE2) | (0<<TOIE2) | (0<<TICIE1) | (0<<OCIE1A) | (0<<OCIE1B) | (1<<TOIE1) | (0<<OCIE0) | (0<<TOIE0);
+; 0000 0087 
+; 0000 0088 // Timer(s)/Counter(s) Interrupt(s) initialization
+; 0000 0089 TIMSK=(0<<OCIE2) | (0<<TOIE2) | (0<<TICIE1) | (0<<OCIE1A) | (0<<OCIE1B) | (1<<TOIE1) | (0<<OCIE0) | (0<<TOIE0);
 	LDI  R30,LOW(4)
 	OUT  0x39,R30
-; 0000 0088 
-; 0000 0089     bIsFirstTime = true;
+; 0000 008A 
+; 0000 008B     bIsFirstTime = true;
 	LDI  R30,LOW(1)
 	STS  _bIsFirstTime,R30
-; 0000 008A      MCUCR=0x02;
+; 0000 008C      MCUCR=0x02;
 	LDI  R30,LOW(2)
 	OUT  0x35,R30
-; 0000 008B      GICR=(1<<INT0);
+; 0000 008D      GICR=(1<<INT0);
 	LDI  R30,LOW(64)
 	OUT  0x3B,R30
-; 0000 008C 
-; 0000 008D 
-; 0000 008E     KEY_DDR = 0xF0;
+; 0000 008E 
+; 0000 008F 
+; 0000 0090     KEY_DDR = 0xF0;
 	LDI  R30,LOW(240)
 	OUT  0x14,R30
-; 0000 008F     KEY_PRT = 0x0F;
+; 0000 0091     KEY_PRT = 0x0F;
 	LDI  R30,LOW(15)
 	OUT  0x15,R30
-; 0000 0090     i=0;
+; 0000 0092     i=0;
 	CLR  R8
 	CLR  R9
-; 0000 0091 
-; 0000 0092 // Global enable interrupts
 ; 0000 0093 
-; 0000 0094 
+; 0000 0094 // Global enable interrupts
 ; 0000 0095 
 ; 0000 0096 
-; 0000 0097     ShowCategory();
-	RCALL _ShowCategory
+; 0000 0097 
 ; 0000 0098 
-; 0000 0099     lcd_init2();
+; 0000 0099     ShowCategory();
+	RCALL _ShowCategory
+; 0000 009A 
+; 0000 009B     lcd_init2();
 	RCALL _lcd_init2
-; 0000 009A     lcd_gotoxy2(1,1);
+; 0000 009C     lcd_gotoxy2(1,1);
 	LDI  R30,LOW(1)
 	ST   -Y,R30
 	LDI  R26,LOW(1)
 	RCALL _lcd_gotoxy2
-; 0000 009B     lcd_print2("Second Lcd");
+; 0000 009D     lcd_print2("Second Lcd");
 	__POINTW2MN _0x34,0
 	RCALL _lcd_print2
-; 0000 009C #asm("sei")
+; 0000 009E #asm("sei")
 	sei
-; 0000 009D 
-; 0000 009E while (1)
+; 0000 009F 
+; 0000 00A0 while (1)
 _0x35:
-; 0000 009F       {
-; 0000 00A0       // Place your code here
-; 0000 00A1 
-; 0000 00A2       }
+; 0000 00A1       {
+; 0000 00A2       // Place your code here
+; 0000 00A3 
+; 0000 00A4       }
 	RJMP _0x35
-; 0000 00A3 }
+; 0000 00A5 }
 _0x38:
 	RJMP _0x38
 ; .FEND
@@ -2587,38 +2595,38 @@ _0x34:
 ;
 ;
 ;interrupt [EXT_INT0] void ext_int0_isr(void)
-; 0000 00A9 {
+; 0000 00AB {
 
 	.CSEG
 _ext_int0_isr:
 ; .FSTART _ext_int0_isr
 	CALL SUBOPT_0x6
-; 0000 00AA 
-; 0000 00AB   DDRA=0xFF;
+; 0000 00AC 
+; 0000 00AD   DDRA=0xFF;
 	OUT  0x1A,R30
-; 0000 00AC   PORTA=0x00;
+; 0000 00AE   PORTA=0x00;
 	LDI  R30,LOW(0)
 	OUT  0x1B,R30
-; 0000 00AD 
-; 0000 00AE  lcd_gotoxy(1,1);
+; 0000 00AF 
+; 0000 00B0  lcd_gotoxy(1,1);
 	LDI  R30,LOW(1)
 	ST   -Y,R30
 	LDI  R26,LOW(1)
 	RCALL _lcd_gotoxy
-; 0000 00AF 
-; 0000 00B0  out=get_key();
+; 0000 00B1 
+; 0000 00B2  out=get_key();
 	RCALL _get_key
 	MOV  R7,R30
-; 0000 00B1 
-; 0000 00B2 
 ; 0000 00B3 
-; 0000 00B4  if(bCanSelectCategory == true)
+; 0000 00B4 
+; 0000 00B5 
+; 0000 00B6  if(bCanSelectCategory == true)
 	LDS  R26,_bCanSelectCategory
 	CPI  R26,LOW(0x1)
 	BRNE _0x39
-; 0000 00B5  {
-; 0000 00B6 
-; 0000 00B7     if(atoi(&out) >= 1 && atoi(&out) <= CATEGORY_LENGTH)  //Check If input is valid
+; 0000 00B7  {
+; 0000 00B8 
+; 0000 00B9     if(atoi(&out) >= 1 && atoi(&out) <= CATEGORY_LENGTH)  //Check If input is valid
 	LDI  R26,LOW(7)
 	LDI  R27,HIGH(7)
 	CALL _atoi
@@ -2632,152 +2640,152 @@ _ext_int0_isr:
 _0x3B:
 	RJMP _0x3A
 _0x3C:
-; 0000 00B8     {
-; 0000 00B9        bCanSelectCategory = false;
+; 0000 00BA     {
+; 0000 00BB        bCanSelectCategory = false;
 	LDI  R30,LOW(0)
 	STS  _bCanSelectCategory,R30
-; 0000 00BA        SelectedCategory = out;
+; 0000 00BC        SelectedCategory = out;
 	MOV  R6,R7
-; 0000 00BB        SelectAndShowWord(out);
+; 0000 00BD        SelectAndShowWord(out);
 	MOV  R26,R7
 	RCALL _SelectAndShowWord
-; 0000 00BC 
-; 0000 00BD     }
-; 0000 00BE  }
+; 0000 00BE 
+; 0000 00BF     }
+; 0000 00C0  }
 _0x3A:
-; 0000 00BF  else if ( bCanGuess == true )
+; 0000 00C1  else if ( bCanGuess == true )
 	RJMP _0x3D
 _0x39:
 	LDS  R26,_bCanGuess
 	CPI  R26,LOW(0x1)
 	BREQ PC+2
 	RJMP _0x3E
-; 0000 00C0  {
-; 0000 00C1 
-; 0000 00C2 
+; 0000 00C2  {
 ; 0000 00C3 
-; 0000 00C4     if(out == 'A')
+; 0000 00C4 
+; 0000 00C5 
+; 0000 00C6     if(out == 'A')
 	LDI  R30,LOW(65)
 	CP   R30,R7
 	BRNE _0x3F
-; 0000 00C5        {
-; 0000 00C6             WordSetState = 0;
+; 0000 00C7        {
+; 0000 00C8             WordSetState = 0;
 	LDI  R30,LOW(0)
 	STS  _WordSetState,R30
 	STS  _WordSetState+1,R30
-; 0000 00C7             Print6( AWords);
+; 0000 00C9             Print6( AWords);
 	LDI  R26,LOW(_AWords)
 	LDI  R27,HIGH(_AWords)
 	RCALL _Print6
-; 0000 00C8 
-; 0000 00C9             bIsFirstTime = false;
+; 0000 00CA 
+; 0000 00CB             bIsFirstTime = false;
 	LDI  R30,LOW(0)
 	STS  _bIsFirstTime,R30
-; 0000 00CA        }
-; 0000 00CB        else if(out == 'B')
+; 0000 00CC        }
+; 0000 00CD        else if(out == 'B')
 	RJMP _0x40
 _0x3F:
 	LDI  R30,LOW(66)
 	CP   R30,R7
 	BRNE _0x41
-; 0000 00CC        {
-; 0000 00CD             WordSetState = 1;
+; 0000 00CE        {
+; 0000 00CF             WordSetState = 1;
 	LDI  R30,LOW(1)
 	LDI  R31,HIGH(1)
 	CALL SUBOPT_0x9
-; 0000 00CE             Print6( BWords);
+; 0000 00D0             Print6( BWords);
 	LDI  R26,LOW(_BWords)
 	LDI  R27,HIGH(_BWords)
 	RCALL _Print6
-; 0000 00CF             bIsFirstTime = false;
+; 0000 00D1             bIsFirstTime = false;
 	LDI  R30,LOW(0)
 	STS  _bIsFirstTime,R30
-; 0000 00D0        }
-; 0000 00D1        else if(out == 'C')
+; 0000 00D2        }
+; 0000 00D3        else if(out == 'C')
 	RJMP _0x42
 _0x41:
 	LDI  R30,LOW(67)
 	CP   R30,R7
 	BRNE _0x43
-; 0000 00D2        {
-; 0000 00D3             WordSetState = 2;
+; 0000 00D4        {
+; 0000 00D5             WordSetState = 2;
 	LDI  R30,LOW(2)
 	LDI  R31,HIGH(2)
 	CALL SUBOPT_0x9
-; 0000 00D4             Print7( CWords);
+; 0000 00D6             Print7( CWords);
 	LDI  R26,LOW(_CWords)
 	LDI  R27,HIGH(_CWords)
 	RCALL _Print7
-; 0000 00D5             bIsFirstTime = false;
+; 0000 00D7             bIsFirstTime = false;
 	LDI  R30,LOW(0)
 	STS  _bIsFirstTime,R30
-; 0000 00D6        }
-; 0000 00D7        else if(out == 'D')
+; 0000 00D8        }
+; 0000 00D9        else if(out == 'D')
 	RJMP _0x44
 _0x43:
 	LDI  R30,LOW(68)
 	CP   R30,R7
 	BRNE _0x45
-; 0000 00D8        {
-; 0000 00D9             WordSetState = 3;
+; 0000 00DA        {
+; 0000 00DB             WordSetState = 3;
 	LDI  R30,LOW(3)
 	LDI  R31,HIGH(3)
 	CALL SUBOPT_0x9
-; 0000 00DA             Print7( FWords);
+; 0000 00DC             Print7( FWords);
 	LDI  R26,LOW(_FWords)
 	LDI  R27,HIGH(_FWords)
 	RCALL _Print7
-; 0000 00DB             bIsFirstTime = false;
+; 0000 00DD             bIsFirstTime = false;
 	LDI  R30,LOW(0)
 	STS  _bIsFirstTime,R30
-; 0000 00DC        }else
+; 0000 00DE        }else
 	RJMP _0x46
 _0x45:
-; 0000 00DD        {
-; 0000 00DE            if(!bIsFirstTime)
+; 0000 00DF        {
+; 0000 00E0            if(!bIsFirstTime)
 	LDS  R30,_bIsFirstTime
 	CPI  R30,0
 	BRNE _0x47
-; 0000 00DF            {
-; 0000 00E0                 if(out == '#')
+; 0000 00E1            {
+; 0000 00E2                 if(out == '#')
 	LDI  R30,LOW(35)
 	CP   R30,R7
 	BREQ _0x49
-; 0000 00E1                 {
-; 0000 00E2                     //todo UpperCase
-; 0000 00E3                 }
-; 0000 00E4                 else
-; 0000 00E5                 {
-; 0000 00E6                      bIsSelectedNumber = true;
+; 0000 00E3                 {
+; 0000 00E4                     //todo UpperCase
+; 0000 00E5                 }
+; 0000 00E6                 else
+; 0000 00E7                 {
+; 0000 00E8                      bIsSelectedNumber = true;
 	LDI  R30,LOW(1)
 	STS  _bIsSelectedNumber,R30
-; 0000 00E7                 }
+; 0000 00E9                 }
 _0x49:
-; 0000 00E8 
-; 0000 00E9            }
-; 0000 00EA        }
+; 0000 00EA 
+; 0000 00EB            }
+; 0000 00EC        }
 _0x47:
 _0x46:
 _0x44:
 _0x42:
 _0x40:
-; 0000 00EB 
-; 0000 00EC 
-; 0000 00ED     if(bIsSelectedNumber)
+; 0000 00ED 
+; 0000 00EE 
+; 0000 00EF     if(bIsSelectedNumber)
 	LDS  R30,_bIsSelectedNumber
 	CPI  R30,0
 	BRNE PC+2
 	RJMP _0x4A
-; 0000 00EE     {
-; 0000 00EF         bIsSelectedNumber = false;
+; 0000 00F0     {
+; 0000 00F1         bIsSelectedNumber = false;
 	LDI  R30,LOW(0)
 	STS  _bIsSelectedNumber,R30
-; 0000 00F0 
-; 0000 00F1         h = &out;
+; 0000 00F2 
+; 0000 00F3         h = &out;
 	LDI  R30,LOW(7)
 	LDI  R31,HIGH(7)
 	MOVW R10,R30
-; 0000 00F2         sscanf(&out,"%d",&CharIndex);
+; 0000 00F4         sscanf(&out,"%d",&CharIndex);
 	ST   -Y,R31
 	ST   -Y,R30
 	__POINTW1FN _0x0,715
@@ -2791,67 +2799,67 @@ _0x40:
 	LDI  R24,4
 	CALL _sscanf
 	ADIW R28,8
-; 0000 00F3 
-; 0000 00F4 
 ; 0000 00F5 
-; 0000 00F6         if(WordSetState == 0)
+; 0000 00F6 
+; 0000 00F7 
+; 0000 00F8         if(WordSetState == 0)
 	LDS  R30,_WordSetState
 	LDS  R31,_WordSetState+1
 	SBIW R30,0
 	BRNE _0x4B
-; 0000 00F7         {
-; 0000 00F8                 ChoosenChar = AWords[CharIndex - 1];
+; 0000 00F9         {
+; 0000 00FA                 ChoosenChar = AWords[CharIndex - 1];
 	CALL SUBOPT_0xA
 	LDI  R26,LOW(_AWords)
 	LDI  R27,HIGH(_AWords)
-	RJMP _0x7F
-; 0000 00F9 
-; 0000 00FA         }
-; 0000 00FB         else if ( WordSetState == 1)
+	RJMP _0x83
+; 0000 00FB 
+; 0000 00FC         }
+; 0000 00FD         else if ( WordSetState == 1)
 _0x4B:
 	CALL SUBOPT_0xB
 	SBIW R26,1
 	BRNE _0x4D
-; 0000 00FC         {
-; 0000 00FD                ChoosenChar = BWords[CharIndex - 1];
+; 0000 00FE         {
+; 0000 00FF                ChoosenChar = BWords[CharIndex - 1];
 	CALL SUBOPT_0xA
 	LDI  R26,LOW(_BWords)
 	LDI  R27,HIGH(_BWords)
-	RJMP _0x7F
-; 0000 00FE 
-; 0000 00FF         }
-; 0000 0100         else if ( WordSetState == 2)
+	RJMP _0x83
+; 0000 0100 
+; 0000 0101         }
+; 0000 0102         else if ( WordSetState == 2)
 _0x4D:
 	CALL SUBOPT_0xB
 	SBIW R26,2
 	BRNE _0x4F
-; 0000 0101         {
-; 0000 0102                ChoosenChar = CWords[CharIndex - 1];
+; 0000 0103         {
+; 0000 0104                ChoosenChar = CWords[CharIndex - 1];
 	CALL SUBOPT_0xA
 	LDI  R26,LOW(_CWords)
 	LDI  R27,HIGH(_CWords)
-	RJMP _0x7F
-; 0000 0103         }
-; 0000 0104         else if ( WordSetState == 3)
+	RJMP _0x83
+; 0000 0105         }
+; 0000 0106         else if ( WordSetState == 3)
 _0x4F:
 	CALL SUBOPT_0xB
 	SBIW R26,3
 	BRNE _0x51
-; 0000 0105         {
-; 0000 0106               ChoosenChar = DWords[CharIndex - 1];
+; 0000 0107         {
+; 0000 0108               ChoosenChar = DWords[CharIndex - 1];
 	CALL SUBOPT_0xA
 	LDI  R26,LOW(_DWords)
 	LDI  R27,HIGH(_DWords)
-_0x7F:
+_0x83:
 	LSL  R30
 	ROL  R31
 	CALL SUBOPT_0xC
 	STS  _ChoosenChar,R30
 	STS  _ChoosenChar+1,R31
-; 0000 0107         }
-; 0000 0108 
-; 0000 0109         //lcd_print2(&ChoosenChar);
-; 0000 010A         CheckGuess(ChoosenChar, CurrentWord);
+; 0000 0109         }
+; 0000 010A 
+; 0000 010B         //lcd_print2(&ChoosenChar);
+; 0000 010C         CheckGuess(ChoosenChar, CurrentWord);
 _0x51:
 	LDS  R30,_ChoosenChar
 	LDS  R31,_ChoosenChar+1
@@ -2860,25 +2868,25 @@ _0x51:
 	LDS  R26,_CurrentWord
 	LDS  R27,_CurrentWord+1
 	RCALL _CheckGuess
-; 0000 010B 
-; 0000 010C     }
 ; 0000 010D 
-; 0000 010E 
-; 0000 010F  }
-_0x4A:
+; 0000 010E     }
+; 0000 010F 
 ; 0000 0110 
-; 0000 0111 
-; 0000 0112   KEY_DDR = 0xF0;
+; 0000 0111  }
+_0x4A:
+; 0000 0112 
+; 0000 0113 
+; 0000 0114   KEY_DDR = 0xF0;
 _0x3E:
 _0x3D:
 	LDI  R30,LOW(240)
 	OUT  0x14,R30
-; 0000 0113   KEY_PRT = 0x0F;
+; 0000 0115   KEY_PRT = 0x0F;
 	LDI  R30,LOW(15)
 	OUT  0x15,R30
-; 0000 0114 
-; 0000 0115 }
-_0x85:
+; 0000 0116 
+; 0000 0117 }
+_0x8A:
 	LD   R30,Y+
 	OUT  SREG,R30
 	LD   R31,Y+
@@ -2897,35 +2905,35 @@ _0x85:
 ;
 ;
 ;  void ShowCategory()
-; 0000 0119   {
+; 0000 011B   {
 _ShowCategory:
 ; .FSTART _ShowCategory
-; 0000 011A 
-; 0000 011B 
 ; 0000 011C 
-; 0000 011D         InitAlphabet();
+; 0000 011D 
+; 0000 011E 
+; 0000 011F         InitAlphabet();
 	RCALL _InitAlphabet
-; 0000 011E         InitHealth();
+; 0000 0120         InitHealth();
 	RCALL _InitHealth
-; 0000 011F         lcd_init();
+; 0000 0121         lcd_init();
 	RCALL _lcd_init
-; 0000 0120         WordIndex = 0;
-	CLR  R12
-	CLR  R13
-; 0000 0121         point = 0;
-	LDI  R30,LOW(0)
-	STS  _point,R30
-	STS  _point+1,R30
 ; 0000 0122         WordIndex = 0;
 	CLR  R12
 	CLR  R13
-; 0000 0123        lcd_gotoxy(1,1);
+; 0000 0123         point = 0;
+	LDI  R30,LOW(0)
+	STS  _point,R30
+	STS  _point+1,R30
+; 0000 0124         WordIndex = 0;
+	CLR  R12
+	CLR  R13
+; 0000 0125        lcd_gotoxy(1,1);
 	LDI  R30,LOW(1)
 	ST   -Y,R30
 	LDI  R26,LOW(1)
 	RCALL _lcd_gotoxy
-; 0000 0124 
-; 0000 0125        for(i = 0 ; i < CATEGORY_LENGTH ; i++)
+; 0000 0126 
+; 0000 0127        for(i = 0 ; i < CATEGORY_LENGTH ; i++)
 	CLR  R8
 	CLR  R9
 _0x53:
@@ -2934,232 +2942,251 @@ _0x53:
 	CP   R8,R30
 	CPC  R9,R31
 	BRGE _0x54
-; 0000 0126        {
-; 0000 0127             if(i != 0)
+; 0000 0128        {
+; 0000 0129             if(i != 0)
 	MOV  R0,R8
 	OR   R0,R9
 	BREQ _0x55
-; 0000 0128                 sprintf(tmp," %d.",i+1);
+; 0000 012A                 sprintf(tmp," %d.",i+1);
 	CALL SUBOPT_0xD
 	__POINTW1FN _0x0,729
-	RJMP _0x80
-; 0000 0129             else
+	RJMP _0x84
+; 0000 012B             else
 _0x55:
-; 0000 012A                 sprintf(tmp,"%d.",i+1);
+; 0000 012C                 sprintf(tmp,"%d.",i+1);
 	CALL SUBOPT_0xD
 	__POINTW1FN _0x0,730
-_0x80:
+_0x84:
 	ST   -Y,R31
 	ST   -Y,R30
 	CALL SUBOPT_0xE
-; 0000 012B 
-; 0000 012C             lcd_print(tmp);
+; 0000 012D 
+; 0000 012E             lcd_print(tmp);
 	LDI  R26,LOW(_tmp)
 	LDI  R27,HIGH(_tmp)
 	RCALL _lcd_print
-; 0000 012D             lcd_print(Category[i]);
+; 0000 012F             lcd_print(Category[i]);
 	MOVW R30,R8
 	LDI  R26,LOW(_Category)
 	LDI  R27,HIGH(_Category)
 	CALL SUBOPT_0xF
 	MOVW R26,R30
 	RCALL _lcd_print
-; 0000 012E        }
+; 0000 0130        }
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
 	RJMP _0x53
 _0x54:
-; 0000 012F 
-; 0000 0130        bCanSelectCategory = true;
+; 0000 0131 
+; 0000 0132        bCanSelectCategory = true;
 	LDI  R30,LOW(1)
 	STS  _bCanSelectCategory,R30
-; 0000 0131   }
+; 0000 0133   }
 	RET
 ; .FEND
 ;
 ;  void SelectAndShowWord(unsigned char in)
-; 0000 0134   {
+; 0000 0136   {
 _SelectAndShowWord:
 ; .FSTART _SelectAndShowWord
-; 0000 0135 
-; 0000 0136 
-; 0000 0137       //Init and seed
-; 0000 0138       switch(in)
+; 0000 0137       if(WordIndex > MAX_WORD_NUM - 1)
 	ST   -Y,R26
 ;	in -> Y+0
+	LDI  R30,LOW(19)
+	LDI  R31,HIGH(19)
+	CP   R30,R12
+	CPC  R31,R13
+	BRGE _0x57
+; 0000 0138       {
+; 0000 0139 
+; 0000 013A            bWon = true;
+	LDI  R30,LOW(1)
+	STS  _bWon,R30
+; 0000 013B            EndGame();
+	RCALL _EndGame
+; 0000 013C       }
+; 0000 013D       else
+	RJMP _0x58
+_0x57:
+; 0000 013E       {
+; 0000 013F 
+; 0000 0140           //Init and seed
+; 0000 0141           switch(in)
 	LD   R30,Y
 	LDI  R31,0
-; 0000 0139       {
-; 0000 013A         case '1':
+; 0000 0142           {
+; 0000 0143             case '1':
 	CPI  R30,LOW(0x31)
 	LDI  R26,HIGH(0x31)
 	CPC  R31,R26
-	BRNE _0x5A
-; 0000 013B                 CurrentWord = Sport[WordIndex];
+	BRNE _0x5C
+; 0000 0144                     CurrentWord = Sport[WordIndex];
 	MOVW R30,R12
 	LDI  R26,LOW(_Sport)
 	LDI  R27,HIGH(_Sport)
-	RJMP _0x81
-; 0000 013C                 ShowRandomWord(CurrentWord);
-; 0000 013D                 break;
-; 0000 013E         case '2':
-_0x5A:
+	RJMP _0x85
+; 0000 0145                     ShowRandomWord(CurrentWord);
+; 0000 0146                     break;
+; 0000 0147             case '2':
+_0x5C:
 	CPI  R30,LOW(0x32)
 	LDI  R26,HIGH(0x32)
 	CPC  R31,R26
-	BRNE _0x5B
-; 0000 013F                 CurrentWord = Movie[WordIndex];
+	BRNE _0x5D
+; 0000 0148                     CurrentWord = Movie[WordIndex];
 	MOVW R30,R12
 	LDI  R26,LOW(_Movie)
 	LDI  R27,HIGH(_Movie)
-	RJMP _0x81
-; 0000 0140                 ShowRandomWord(CurrentWord);
-; 0000 0141                 break;
-; 0000 0142         case '3':
-_0x5B:
+	RJMP _0x85
+; 0000 0149                     ShowRandomWord(CurrentWord);
+; 0000 014A                     break;
+; 0000 014B             case '3':
+_0x5D:
 	CPI  R30,LOW(0x33)
 	LDI  R26,HIGH(0x33)
 	CPC  R31,R26
-	BRNE _0x5C
-; 0000 0143                 CurrentWord = Countries[WordIndex];
+	BRNE _0x5E
+; 0000 014C                     CurrentWord = Countries[WordIndex];
 	MOVW R30,R12
 	LDI  R26,LOW(_Countries)
 	LDI  R27,HIGH(_Countries)
-	RJMP _0x81
-; 0000 0144                 ShowRandomWord(CurrentWord);
-; 0000 0145                 break;
-; 0000 0146         case '4':
-_0x5C:
+	RJMP _0x85
+; 0000 014D                     ShowRandomWord(CurrentWord);
+; 0000 014E                     break;
+; 0000 014F             case '4':
+_0x5E:
 	CPI  R30,LOW(0x34)
 	LDI  R26,HIGH(0x34)
 	CPC  R31,R26
-	BRNE _0x59
-; 0000 0147 
-; 0000 0148             CurrentWord = ComputerScience[WordIndex];
+	BRNE _0x5B
+; 0000 0150 
+; 0000 0151                 CurrentWord = ComputerScience[WordIndex];
 	MOVW R30,R12
 	LDI  R26,LOW(_ComputerScience)
 	LDI  R27,HIGH(_ComputerScience)
-_0x81:
+_0x85:
 	LSL  R30
 	ROL  R31
 	CALL SUBOPT_0xC
 	STS  _CurrentWord,R30
 	STS  _CurrentWord+1,R31
-; 0000 0149             ShowRandomWord(CurrentWord);
+; 0000 0152                 ShowRandomWord(CurrentWord);
 	LDS  R26,_CurrentWord
 	LDS  R27,_CurrentWord+1
 	RCALL _ShowRandomWord
-; 0000 014A             break;
-; 0000 014B       }
-_0x59:
-; 0000 014C 
-; 0000 014D             WordIndex = (WordIndex+ 1) ;
+; 0000 0153                 break;
+; 0000 0154           }
+_0x5B:
+; 0000 0155 
+; 0000 0156                 WordIndex = (WordIndex+ 1) ;
 	MOVW R30,R12
 	ADIW R30,1
 	MOVW R12,R30
-; 0000 014E 
-; 0000 014F   }
+; 0000 0157       }
+_0x58:
+; 0000 0158 
+; 0000 0159   }
 _0x20A0007:
 	ADIW R28,1
 	RET
 ; .FEND
 ;
 ;  void ShowRandomWord(char* InputStr)
-; 0000 0152   {
+; 0000 015C   {
 _ShowRandomWord:
 ; .FSTART _ShowRandomWord
-; 0000 0153 
-; 0000 0154      lcd_init();
+; 0000 015D 
+; 0000 015E      lcd_init();
 	CALL SUBOPT_0x10
 ;	*InputStr -> Y+0
-; 0000 0155      lcdCommand(0x0c);
-; 0000 0156      WordLen = strlen(InputStr);
+; 0000 015F      lcdCommand(0x0c);
+; 0000 0160      WordLen = strlen(InputStr);
 	LD   R26,Y
 	LDD  R27,Y+1
 	CALL _strlen
 	STS  _WordLen,R30
 	STS  _WordLen+1,R31
-; 0000 0157      InitAlphabet();
+; 0000 0161      InitAlphabet();
 	RCALL _InitAlphabet
-; 0000 0158 
-; 0000 0159 
-; 0000 015A 
-; 0000 015B      for(  i = 0 ; i < WordLen ; i++)
+; 0000 0162 
+; 0000 0163 
+; 0000 0164 
+; 0000 0165      for(  i = 0 ; i < WordLen ; i++)
 	CLR  R8
 	CLR  R9
-_0x5F:
+_0x61:
 	CALL SUBOPT_0x11
-	BRGE _0x60
-; 0000 015C      {
-; 0000 015D        alphabet[InputStr[i] - 'a'] = 1;
+	BRGE _0x62
+; 0000 0166      {
+; 0000 0167        alphabet[InputStr[i] - 'a'] = 1;
 	CALL SUBOPT_0x12
 	CALL SUBOPT_0x13
 	LDI  R30,LOW(1)
 	LDI  R31,HIGH(1)
 	ST   X+,R30
 	ST   X,R31
-; 0000 015E 
-; 0000 015F 
-; 0000 0160          lcd_print("_ ");
-	__POINTW2MN _0x61,0
+; 0000 0168 
+; 0000 0169 
+; 0000 016A          lcd_print("_ ");
+	__POINTW2MN _0x63,0
 	RCALL _lcd_print
-; 0000 0161 
-; 0000 0162      }
+; 0000 016B 
+; 0000 016C      }
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
-	RJMP _0x5F
-_0x60:
-; 0000 0163       bCanGuess = true;
+	RJMP _0x61
+_0x62:
+; 0000 016D       bCanGuess = true;
 	LDI  R30,LOW(1)
 	STS  _bCanGuess,R30
-; 0000 0164   }
+; 0000 016E   }
 	RJMP _0x20A0006
 ; .FEND
 
 	.DSEG
-_0x61:
+_0x63:
 	.BYTE 0x3
 ;
 ;
 ;  void CheckGuess( char* in,char* CurrWord)
-; 0000 0168   {
+; 0000 0172   {
 
 	.CSEG
 _CheckGuess:
 ; .FSTART _CheckGuess
-; 0000 0169 
-; 0000 016A 
-; 0000 016B 
-; 0000 016C 
-; 0000 016D       lcd_init();
+; 0000 0173 
+; 0000 0174 
+; 0000 0175 
+; 0000 0176 
+; 0000 0177       lcd_init();
 	CALL SUBOPT_0x10
 ;	*in -> Y+2
 ;	*CurrWord -> Y+0
-; 0000 016E 
-; 0000 016F      lcdCommand(0x0c);
-; 0000 0170      bWrongGuess = true;
+; 0000 0178 
+; 0000 0179      lcdCommand(0x0c);
+; 0000 017A      bWrongGuess = true;
 	LDI  R30,LOW(1)
 	STS  _bWrongGuess,R30
-; 0000 0171 
-; 0000 0172      for(  i = 0 ; i < WordLen ; i++)
+; 0000 017B 
+; 0000 017C      for(  i = 0 ; i < WordLen ; i++)
 	CLR  R8
 	CLR  R9
-_0x63:
+_0x65:
 	CALL SUBOPT_0x11
-	BRGE _0x64
-; 0000 0173      {
-; 0000 0174 
-; 0000 0175          if( in[0] == CurrWord[i] )
+	BRGE _0x66
+; 0000 017D      {
+; 0000 017E 
+; 0000 017F          if( in[0] == CurrWord[i] )
 	LDD  R26,Y+2
 	LDD  R27,Y+2+1
 	LD   R0,X
 	CALL SUBOPT_0x12
 	CP   R30,R0
-	BRNE _0x65
-; 0000 0176          {
-; 0000 0177             alphabet[in[0] - 'a'] = 2;
+	BRNE _0x67
+; 0000 0180          {
+; 0000 0181             alphabet[in[0] - 'a'] = 2;
 	LDD  R26,Y+2
 	LDD  R27,Y+2+1
 	LD   R30,X
@@ -3168,42 +3195,42 @@ _0x63:
 	LDI  R31,HIGH(2)
 	ST   X+,R30
 	ST   X,R31
-; 0000 0178             bWrongGuess = false;
+; 0000 0182             bWrongGuess = false;
 	LDI  R30,LOW(0)
 	STS  _bWrongGuess,R30
-; 0000 0179          }
-; 0000 017A 
-; 0000 017B      }
-_0x65:
+; 0000 0183          }
+; 0000 0184 
+; 0000 0185      }
+_0x67:
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
-	RJMP _0x63
-_0x64:
-; 0000 017C 
-; 0000 017D 
-; 0000 017E 
-; 0000 017F      bFoundCorrectGuess = true;
+	RJMP _0x65
+_0x66:
+; 0000 0186 
+; 0000 0187 
+; 0000 0188 
+; 0000 0189      bFoundCorrectGuess = true;
 	LDI  R30,LOW(1)
 	STS  _bFoundCorrectGuess,R30
-; 0000 0180      for(  i = 0 ; i < WordLen ; i++)
+; 0000 018A      for(  i = 0 ; i < WordLen ; i++)
 	CLR  R8
 	CLR  R9
-_0x67:
+_0x69:
 	CALL SUBOPT_0x11
-	BRGE _0x68
-; 0000 0181      {
-; 0000 0182 
-; 0000 0183          if( alphabet[CurrWord[i] - 'a'] == 2 )
+	BRGE _0x6A
+; 0000 018B      {
+; 0000 018C 
+; 0000 018D          if( alphabet[CurrWord[i] - 'a'] == 2 )
 	CALL SUBOPT_0x12
 	CALL SUBOPT_0x14
 	CPI  R30,LOW(0x2)
 	LDI  R26,HIGH(0x2)
 	CPC  R31,R26
-	BRNE _0x69
-; 0000 0184          {
-; 0000 0185 
-; 0000 0186             lcd_print(Words[CurrWord[i] - 'a'] );
+	BRNE _0x6B
+; 0000 018E          {
+; 0000 018F 
+; 0000 0190             lcd_print(Words[CurrWord[i] - 'a'] );
 	CALL SUBOPT_0x12
 	LDI  R31,0
 	SUBI R30,LOW(97)
@@ -3213,123 +3240,125 @@ _0x67:
 	CALL SUBOPT_0xF
 	MOVW R26,R30
 	RCALL _lcd_print
-; 0000 0187 
-; 0000 0188             lcd_print(" ");
-	__POINTW2MN _0x6A,0
-	RJMP _0x82
-; 0000 0189          }
-; 0000 018A          else if( alphabet[CurrWord[i] - 'a'] == 1 )
-_0x69:
+; 0000 0191 
+; 0000 0192             lcd_print(" ");
+	__POINTW2MN _0x6C,0
+	RJMP _0x86
+; 0000 0193          }
+; 0000 0194          else if( alphabet[CurrWord[i] - 'a'] == 1 )
+_0x6B:
 	CALL SUBOPT_0x12
 	CALL SUBOPT_0x14
 	CPI  R30,LOW(0x1)
 	LDI  R26,HIGH(0x1)
 	CPC  R31,R26
-	BRNE _0x6C
-; 0000 018B          {
-; 0000 018C               bFoundCorrectGuess = false;
+	BRNE _0x6E
+; 0000 0195          {
+; 0000 0196               bFoundCorrectGuess = false;
 	LDI  R30,LOW(0)
 	STS  _bFoundCorrectGuess,R30
-; 0000 018D               lcd_print("_ ");
-	__POINTW2MN _0x6A,2
-_0x82:
+; 0000 0197               lcd_print("_ ");
+	__POINTW2MN _0x6C,2
+_0x86:
 	RCALL _lcd_print
-; 0000 018E          }
-; 0000 018F 
-; 0000 0190 
-; 0000 0191      }
-_0x6C:
+; 0000 0198          }
+; 0000 0199 
+; 0000 019A 
+; 0000 019B      }
+_0x6E:
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
-	RJMP _0x67
-_0x68:
-; 0000 0192 
-; 0000 0193           if(bWrongGuess)
+	RJMP _0x69
+_0x6A:
+; 0000 019C 
+; 0000 019D           if(bWrongGuess)
 	LDS  R30,_bWrongGuess
 	CPI  R30,0
-	BREQ _0x6D
-; 0000 0194      {
-; 0000 0195          health -= 1;
+	BREQ _0x6F
+; 0000 019E      {
+; 0000 019F          health -= 1;
 	LDS  R30,_health
 	LDS  R31,_health+1
 	SBIW R30,1
 	STS  _health,R30
 	STS  _health+1,R31
-; 0000 0196             if( health <= 0)
+; 0000 01A0             if( health <= 0)
 	LDS  R26,_health
 	LDS  R27,_health+1
 	CALL __CPW02
-	BRLT _0x6E
-; 0000 0197             {
-; 0000 0198 
-; 0000 0199                 EndGame();
+	BRLT _0x70
+; 0000 01A1             {
+; 0000 01A2                 bWon = false;
+	LDI  R30,LOW(0)
+	STS  _bWon,R30
+; 0000 01A3                 EndGame();
 	RCALL _EndGame
-; 0000 019A             }
-; 0000 019B      }
-_0x6E:
-; 0000 019C 
-; 0000 019D      if(bFoundCorrectGuess)
-_0x6D:
+; 0000 01A4             }
+; 0000 01A5      }
+_0x70:
+; 0000 01A6 
+; 0000 01A7      if(bFoundCorrectGuess)
+_0x6F:
 	LDS  R30,_bFoundCorrectGuess
 	CPI  R30,0
-	BREQ _0x6F
-; 0000 019E      {
-; 0000 019F 
-; 0000 01A0          CalculatePoint();
+	BREQ _0x71
+; 0000 01A8      {
+; 0000 01A9 
+; 0000 01AA          CalculatePoint();
 	RCALL _CalculatePoint
-; 0000 01A1          delay_ms(100);
+; 0000 01AB          delay_ms(100);
 	LDI  R26,LOW(100)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 01A2          lcd_init();
+; 0000 01AC          lcd_init();
 	RCALL _lcd_init
-; 0000 01A3          lcd_print("Correct!");
-	__POINTW2MN _0x6A,5
+; 0000 01AD          lcd_print("Correct!");
+	__POINTW2MN _0x6C,5
 	RCALL _lcd_print
-; 0000 01A4          delay_ms(100);
+; 0000 01AE          delay_ms(100);
 	LDI  R26,LOW(100)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 01A5          InitHealth();
+; 0000 01AF          InitHealth();
 	RCALL _InitHealth
-; 0000 01A6          SelectAndShowWord(SelectedCategory);
+; 0000 01B0          SelectAndShowWord(SelectedCategory);
 	MOV  R26,R6
 	RCALL _SelectAndShowWord
-; 0000 01A7      }
-; 0000 01A8 
-; 0000 01A9 
-; 0000 01AA 
-; 0000 01AB 
-; 0000 01AC 
-; 0000 01AD       //bIsFirstTime = true;
-; 0000 01AE   }
-_0x6F:
+; 0000 01B1      }
+; 0000 01B2 
+; 0000 01B3 
+; 0000 01B4 
+; 0000 01B5 
+; 0000 01B6 
+; 0000 01B7       //bIsFirstTime = true;
+; 0000 01B8   }
+_0x71:
 	ADIW R28,4
 	RET
 ; .FEND
 
 	.DSEG
-_0x6A:
+_0x6C:
 	.BYTE 0xE
 ;
 ;
 ;  void InitAlphabet()
-; 0000 01B2   {
+; 0000 01BC   {
 
 	.CSEG
 _InitAlphabet:
 ; .FSTART _InitAlphabet
-; 0000 01B3     for( i = 0 ; i < 25 ; i++)
+; 0000 01BD     for( i = 0 ; i < 25 ; i++)
 	CLR  R8
 	CLR  R9
-_0x71:
+_0x73:
 	LDI  R30,LOW(25)
 	LDI  R31,HIGH(25)
 	CP   R8,R30
 	CPC  R9,R31
-	BRGE _0x72
-; 0000 01B4         alphabet[i] = 0;
+	BRGE _0x74
+; 0000 01BE         alphabet[i] = 0;
 	MOVW R30,R8
 	LDI  R26,LOW(_alphabet)
 	LDI  R27,HIGH(_alphabet)
@@ -3344,174 +3373,191 @@ _0x71:
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
-	RJMP _0x71
-_0x72:
-; 0000 01B6 }
+	RJMP _0x73
+_0x74:
+; 0000 01C0 }
 	RET
 ; .FEND
 ;
 ;  void Print6( char* in[6])
-; 0000 01B9   {
+; 0000 01C3   {
 _Print6:
 ; .FSTART _Print6
-; 0000 01BA 
-; 0000 01BB 
-; 0000 01BC     lcd_init2();
+; 0000 01C4 
+; 0000 01C5 
+; 0000 01C6     lcd_init2();
 	CALL SUBOPT_0x15
 ;	in -> Y+0
-; 0000 01BD     lcdCommand2(0x0c);
-; 0000 01BE 
-; 0000 01BF     for(i = 0 ; i < 6 ; i++)
-_0x74:
+; 0000 01C7     lcdCommand2(0x0c);
+; 0000 01C8 
+; 0000 01C9     for(i = 0 ; i < 6 ; i++)
+_0x76:
 	LDI  R30,LOW(6)
 	LDI  R31,HIGH(6)
 	CP   R8,R30
 	CPC  R9,R31
-	BRGE _0x75
-; 0000 01C0     {
-; 0000 01C1          if(i != 0)
+	BRGE _0x77
+; 0000 01CA     {
+; 0000 01CB          if(i != 0)
 	MOV  R0,R8
 	OR   R0,R9
-	BREQ _0x76
-; 0000 01C2                 sprintf(tmp," %d.",i+1);
+	BREQ _0x78
+; 0000 01CC                 sprintf(tmp," %d.",i+1);
 	CALL SUBOPT_0xD
 	__POINTW1FN _0x0,729
-	RJMP _0x83
-; 0000 01C3             else
-_0x76:
-; 0000 01C4                 sprintf(tmp,"%d.",i+1);
+	RJMP _0x87
+; 0000 01CD             else
+_0x78:
+; 0000 01CE                 sprintf(tmp,"%d.",i+1);
 	CALL SUBOPT_0xD
 	__POINTW1FN _0x0,730
-_0x83:
+_0x87:
 	ST   -Y,R31
 	ST   -Y,R30
 	CALL SUBOPT_0xE
-; 0000 01C5 
-; 0000 01C6 
-; 0000 01C7             lcd_print2(tmp);
+; 0000 01CF 
+; 0000 01D0 
+; 0000 01D1             lcd_print2(tmp);
 	CALL SUBOPT_0x16
-; 0000 01C8             lcd_print2(in[i]);
+; 0000 01D2             lcd_print2(in[i]);
 	MOVW R26,R30
 	RCALL _lcd_print2
-; 0000 01C9     }
+; 0000 01D3     }
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
-	RJMP _0x74
-_0x75:
-; 0000 01CA   }
+	RJMP _0x76
+_0x77:
+; 0000 01D4   }
 	RJMP _0x20A0006
 ; .FEND
 ;
 ;    void Print7(char*  in[7])
-; 0000 01CD   {
+; 0000 01D7   {
 _Print7:
 ; .FSTART _Print7
-; 0000 01CE 
-; 0000 01CF 
-; 0000 01D0 
-; 0000 01D1     lcd_init2();
+; 0000 01D8 
+; 0000 01D9 
+; 0000 01DA 
+; 0000 01DB     lcd_init2();
 	CALL SUBOPT_0x15
 ;	in -> Y+0
-; 0000 01D2     lcdCommand2(0x0c);
-; 0000 01D3 
-; 0000 01D4     for(i = 0 ; i < 7 ; i++)
-_0x79:
+; 0000 01DC     lcdCommand2(0x0c);
+; 0000 01DD 
+; 0000 01DE     for(i = 0 ; i < 7 ; i++)
+_0x7B:
 	LDI  R30,LOW(7)
 	LDI  R31,HIGH(7)
 	CP   R8,R30
 	CPC  R9,R31
-	BRGE _0x7A
-; 0000 01D5     {
-; 0000 01D6          if(i != 0)
+	BRGE _0x7C
+; 0000 01DF     {
+; 0000 01E0          if(i != 0)
 	MOV  R0,R8
 	OR   R0,R9
-	BREQ _0x7B
-; 0000 01D7                 sprintf(tmp," %d.",i+1);
+	BREQ _0x7D
+; 0000 01E1                 sprintf(tmp," %d.",i+1);
 	CALL SUBOPT_0xD
 	__POINTW1FN _0x0,729
-	RJMP _0x84
-; 0000 01D8             else
-_0x7B:
-; 0000 01D9                 sprintf(tmp,"%d.",i+1);
+	RJMP _0x88
+; 0000 01E2             else
+_0x7D:
+; 0000 01E3                 sprintf(tmp,"%d.",i+1);
 	CALL SUBOPT_0xD
 	__POINTW1FN _0x0,730
-_0x84:
+_0x88:
 	ST   -Y,R31
 	ST   -Y,R30
 	CALL SUBOPT_0xE
-; 0000 01DA 
-; 0000 01DB 
-; 0000 01DC             lcd_print2(tmp);
+; 0000 01E4 
+; 0000 01E5 
+; 0000 01E6             lcd_print2(tmp);
 	CALL SUBOPT_0x16
-; 0000 01DD             lcd_print2(in[i]);
+; 0000 01E7             lcd_print2(in[i]);
 	MOVW R26,R30
 	RCALL _lcd_print2
-; 0000 01DE     }
+; 0000 01E8     }
 	MOVW R30,R8
 	ADIW R30,1
 	MOVW R8,R30
-	RJMP _0x79
-_0x7A:
-; 0000 01DF   }
+	RJMP _0x7B
+_0x7C:
+; 0000 01E9   }
 _0x20A0006:
 	ADIW R28,2
 	RET
 ; .FEND
 ;
 ;  void InitHealth()
-; 0000 01E2   {
+; 0000 01EC   {
 _InitHealth:
 ; .FSTART _InitHealth
-; 0000 01E3     health = MAX_HEALTH;
+; 0000 01ED     health = MAX_HEALTH;
 	LDI  R30,LOW(3)
 	LDI  R31,HIGH(3)
 	STS  _health,R30
 	STS  _health+1,R31
-; 0000 01E4 
-; 0000 01E5   }
+; 0000 01EE 
+; 0000 01EF   }
 	RET
 ; .FEND
 ;
+;
+;
 ;  void EndGame()
-; 0000 01E8   {
+; 0000 01F4   {
 _EndGame:
 ; .FSTART _EndGame
-; 0000 01E9 
-; 0000 01EA       bCanGuess = false;
+; 0000 01F5 
+; 0000 01F6       bCanGuess = false;
 	LDI  R30,LOW(0)
 	STS  _bCanGuess,R30
-; 0000 01EB       //todo lcd print
-; 0000 01EC       lcd_init();
+; 0000 01F7       //todo lcd print
+; 0000 01F8       lcd_init();
 	RCALL _lcd_init
-; 0000 01ED       lcd_print("GAME OVER!!                   try again");
-	__POINTW2MN _0x7D,0
+; 0000 01F9       if(bWon)
+	LDS  R30,_bWon
+	CPI  R30,0
+	BREQ _0x7F
+; 0000 01FA       {
+; 0000 01FB            lcd_print("You Won, hooray :) ");
+	__POINTW2MN _0x80,0
+	RJMP _0x89
+; 0000 01FC       }
+; 0000 01FD       else
+_0x7F:
+; 0000 01FE       {
+; 0000 01FF            lcd_print("GAME OVER!!                   try again");
+	__POINTW2MN _0x80,20
+_0x89:
 	RCALL _lcd_print
-; 0000 01EE       delay_ms(200);
+; 0000 0200       }
+; 0000 0201 
+; 0000 0202       delay_ms(200);
 	LDI  R26,LOW(200)
 	LDI  R27,0
 	CALL _delay_ms
-; 0000 01EF       InitHealth();
+; 0000 0203       InitHealth();
 	RCALL _InitHealth
-; 0000 01F0       ShowCategory();
+; 0000 0204       ShowCategory();
 	RCALL _ShowCategory
-; 0000 01F1 
-; 0000 01F2   }
+; 0000 0205 
+; 0000 0206   }
 	RET
 ; .FEND
 
 	.DSEG
-_0x7D:
-	.BYTE 0x28
+_0x80:
+	.BYTE 0x3C
 ;
 ;  void CalculatePoint()
-; 0000 01F5   {
+; 0000 0209   {
 
 	.CSEG
 _CalculatePoint:
 ; .FSTART _CalculatePoint
-; 0000 01F6 
-; 0000 01F7      point += ( WordLen * 10 + WordIndex);
+; 0000 020A 
+; 0000 020B      point += ( WordLen * 10 + WordIndex);
 	LDS  R30,_WordLen
 	LDS  R31,_WordLen+1
 	LDI  R26,LOW(10)
@@ -3525,8 +3571,8 @@ _CalculatePoint:
 	ADC  R31,R27
 	STS  _point,R30
 	STS  _point+1,R31
-; 0000 01F8 
-; 0000 01F9   }
+; 0000 020C 
+; 0000 020D   }
 	RET
 ; .FEND
 	#ifndef __SLEEP_DEFINED__
@@ -4675,6 +4721,8 @@ _bIsFirstTime:
 _bWrongGuess:
 	.BYTE 0x1
 _bFoundCorrectGuess:
+	.BYTE 0x1
+_bWon:
 	.BYTE 0x1
 _health:
 	.BYTE 0x2

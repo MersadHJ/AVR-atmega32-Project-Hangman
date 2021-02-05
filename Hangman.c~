@@ -29,7 +29,7 @@ char tmp[50];
 char Scoretmp[50];
 #define  CATEGORY_LENGTH    4
 #define MAX_HEALTH 3
-#define MAX_WORD_NUM 20
+#define MAX_WORD_NUM 2
 char* Category[CATEGORY_LENGTH] = {"Sport","Movie","Countries","CS"};
 char* Sport[20] = {"football","basketball","volleyball","karate","kungfu","boxing","tennis","running","wrestling","hockey",
                     "judo","golf","baseball","billiard","curling","waterpolo","taekwando","fencing","swimming","jujitsu"};
