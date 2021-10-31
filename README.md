@@ -1,53 +1,36 @@
-# AVR-atmega32-Project-Hangman
+# Project Hangman
+
+Project Hangman is a word guessing game in which a word is chosen by computer and the player have to guess what the word is.
+This project is implemented using C language for AVR atmega 32 as our final project for microprocessor course.
+
+## Team Members
+
++ [Nami Naziri](https://github.com/NamiNaziri)
+
++ [Mersad Hassanjani](https://github.com/MersadHassanjani)
+
+## Project Details
+
+Firstly, the player have to choose a category. There are four categories (sports, movies, countries and computer science related words). Then a word will be chosen from our database of words. There are currently 20 words for each category and new words can be added through the code.
+
+There are two LCDs. The first one is used for showing categories and words. The second one is used for showing player's score and the number of chanses the player have.
+In addition since the keypad we were using did not have any alphabetic word we had to use the second LCD for showing alphabet too.
+
+When the player wants to guess the word he will use the key pad and by pressing any number on that, series of alphabet will be shown on the second LCD and by pressing again the selected alphabet will get registered. 
+
+## Rules
+
+For each word the player has 3 chances and if he can not find the word in those chases the game will get restarted. 
+When the player guess the word currectly, his/her chances get reset.
+For each word that the player guess, he/she gets a score.
+
+## implementation
+
+For each word that is to be guessed we have an integer array of 26 which is equal to the number of alphabets. So whenever a word is chosen, the array's index corresponding to alphabets in that word will get the value of one. And when the player guess the alphabet currectly, the corresponding index of that will get the value of two.
+If all of the one's turn into two, the player guessed the word currectly.
 
 
+https://user-images.githubusercontent.com/49837425/139583004-5184c4ea-865e-4cb0-8861-b32ee1b83892.mp4
 
-
-
-<div dir="rtl">
-در این پروژه بازی معروف hangman درست شده است که بدلیل مهیا نبودن شرایط ساخت سخت افزار مورد نیاز برای این پروژه تصمیم بر این شد که در بازی تغییراتی ایجاد شود تا بازی کمی جذاب تر شود.
-  
-در این بازی 4 موضوع اصلی برای انتخاب کلمه وجود دارد.
-  
-1. اسامی ورزش ها 
-
-2. اسامی فیلم
-
-3. اسامی کشور ها
-
-4. کلمات مربوط به رشته کامپیوتر
-
-
-
-
-
-
-که ابتدا کاربر باید شماره یکی از این چهار موضوع را انتخاب کند و سپس 20 مرحله روبروی کاربر قرار میگیرد که کاربر در هر مرحله با استفاده از دکمه های A,B,C,D کنار کیبورد و اعداد (که توضیحات دقیق اینکه هر کلید چه حرفی را نشان میدهد در نمایشگر دوم قرار میگیرد) باید حدس بزند که کلمه ی این مرحله از چه حروفی تشکیل شده است.
-
-در هر مرحله سه شانس به کاربر داده میشود که اگر از سه شانس خود به خوبی استفاده نکند می بازد و بازی از ابتدا شروع میشود ولی هر مرحله ای که بتواند به سلامت عبور کند امتیاز مخصوص به خود را دارد که این امتیاز به همراه تعداد شانس های باقیمانده روی نمایشگر دوم نیز قرار دارد.
-
-با هر بار عبور از یک مرحله یا شکست ، شانس ها دوباره روی عدد 3 قرار میگیرند.
-
-![This is the caption](https://github.com/NamiNaziri/AVR-atmega32-Project-Hangman/blob/main/Extra/Proteus.png?raw=true)
-
-
-مراحل در چهار آرایه مجزا قرار گرفته اند که با توجه به ورودی کاربر مراحل متناظر با آن موضوع نمایش داده میشود.
-
-اگر کاربر ورودی جز اعداد موضوعات وارد کند اتفاقی نمیافتد.هنگامی که عدد صحیح را وارد کند یک پرچم ست میشود تا بتواند حروف مرحله اول را حدس بزند.
-هنگامی که یکی از دکمه های A,B,C,D را فشار دهد راهنمای انتخاب حروف روی نمایشگر دوم چاپ میشود.
-
-برای نشان دادن تعداد شانس ها و امتیاز کاربر از تایمر یک استفاده شده است که با هر بار سرریز مقادیر روی نمایشگر نوشته میشوند و برای گرفتن ورودی از صفحه کلید از وقفه INT0 استفاده شده است.
-
-چالش اصلی این بود که باید چک میشد که حروفی که کاربر وارد میکند با حروف کلمه مورد نظر یکی باشد و حروف تکراری نیز نباید تغییری در وضعیت برنامه ایجاد کند.
-پس از یک آرایه استفاده کرده ایم که متناظر با همه ی حروف الفباس و مقادیر اولیه این آرایه همه صفر است و با انتخاب کلمه موردنظر برای مرحله ای که در آن هستیم شماره حروف آن را بدست میاوریم و اندیس متناظر با‌ آن را یک میکنیم .
-
-سپس در هر بار ورود حرف توسط کاربر اگر حرفی که وارد شد،در آرایه مقدارش یک بود و این حرف با هر یک از حروف کلمه یکی بود، مقدار آن اندیس تبدیل به 2 میشود که متوجه شویم این حرف درست حدس زده شده است.
-
-هنگامی که همه ی اندیس هایی که در آرایه حروف داریم مخالف یک باشند پس کلمه درست حدس زده شده است و به مرحله بعد خواهیم رفت.
-
-
-
-
-</div>
 
 
